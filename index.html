@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YT iframe test</title>
+    <script>
+      var page_start;
+      var video_ids = [
+"-3sH1GaO_nw",
+"a--3q4fOL5g",
+"acX4S22Gafg",
+"A_uYSWL_Cvk",
+"BgYpEN_0XzU",
+"bvPkeCA4E1k",
+"BxCjDILEhlg",
+"Cne5QS0NrbI",
+"coddUeAed_I",
+"CQ-HZHgvKHY",
+"D7CpWqkXSTY",
+"DuYHSXRli-A",
+"EVwlMVYqMu4",
+"F2a0wDoPW1k",
+"FffXxd-T5j4",
+"-_FIwePYdjE",
+"FL0bjwez8mg",
+"FMxq5PiXrDI",
+"fs0AXusd2S0",
+"fSQwCK_8VSM",
+"FvpogNkala8",
+"FWRhuZihrKA",
+"-Fz85FE0KtQ",
+"gBNIVq4atgs",
+"GLa4sEd-V70",
+"gx1-emg54H0",
+"h5gdDQcAM-Y",
+"h5kfLG4c_PE",
+"hbz6VyUZhxA",
+"HBZxyYZng-I",
+"I3i1wNPpAJM",
+"InxdlaVF_ME",
+"ipPZPItJagk",
+"iWTEOJwxzxg",
+"j3WK9IHeTyA",
+"jgk7rUYYKp4",
+"jGKRXhmFQlw",
+"joJCWy4dbYY",
+"JrD0rSVpRVU",
+"JtaKdLVrceU",
+"JZ4zMW55MSQ",
+"Kav0FEhtLug",
+"kBdfcR-8hEY",
+"lepXx1kDelo",
+"lHCdHh1eSi0",
+"lURiwo3aX5I",
+"mBIHvpvExUE",
+"miEi3F8s8H8",
+"mySP6H6owus",
+"nCgQDjiotG0",
+"NGe4bDn85vk",
+"NlffKrfMnfM",
+"NqzJwoinOJg",
+"oknEsw8W5Ms",
+"oog-sPcRd7E",
+"Or3wvF9ts0I",
+"OvMVCHhwTPs",
+"pbxAFYN2j38",
+"PnG7vqxfHPg",
+"psuRGfAaju4",
+"QdgCajndgNw",
+"qJVaQUklZ8Y",
+"qQI7PmkQeM4",
+"r7d_bVgQ1lY",
+"R8jCP_-oBgQ",
+"Rd_jBrhAEQ4",
+"rE-aBIaUSVg",
+"rmz6e6Qrsn4",
+"roWpZ2Yz-2g",
+"RSpC212a1rs",
+"S0QFLZCH3FI",
+"sHxzSamJX4M",
+"SOEoVxtx9Rs",
+"S-oo2lZgPuY",
+"sqcgy6xLrEM",
+"SrkELrLAuGM",
+"t4fhsgZbgKk",
+"tjWOvmH_SE8",
+"ttPzezkcpjU",
+"Tvq4UtQ6p3o",
+"U3EI-qtjHqc",
+"_uKIM1GRAf0",
+"uZnpikoHNWw",
+"V7IFP7SDLiI",
+"Vhk1gCyaTPo",
+"vIkLnyQfm4I",
+"vqjGEb4QtYg",
+"vQXn3EzzYY4",
+"VtVbUmcQSuk",
+"vwPz_uPahMM",
+"vX1TAqSf0-Y",
+"VZMfhtKa-wo",
+"_W1yxtg5gDE",
+"W9y6nwBwwyQ",
+"Wf79vqaQP7g",
+"WHa4aDJhV1k",
+"WK2LpUoqX6A",
+"WS8ap-fQWWE",
+"wtx1WCAgw4E",
+"_Wwap1wPYNk",
+"x72JbwyROOo",
+"YHROHJlU_Ng",
+"ykJFGK1S_Pc",
+"yxEI20wQLDk",
+"_z5cSIbEUDQ",
+"zbwHEgEqK4M",
+"zC617kE1maU",
+"zmYK9g7faLc",
+"ZnK9kS0ef_Q",
+"znzBUtyDmB4",
+"ZudX66IBat8",
+"ZVjr4mii3cE",
+"ZXJwwQU23z4",
+"zzezhYAVv7g",
+"2_9qHPeixWk",
+"2zw8SmsovJc",
+"3NGSU2PM9dA",
+"4KZg0RbRHEs",
+"4X4jWrjYNiU",
+"4YNkZRccBVs",
+"5ejAKZ3KXcQ",
+"5QQzusr4IH0",
+"6PKQE8FM2Uw",
+"7Ucy_abshJk",
+"8rwsuXHA7RA",
+"8vZR0Rq1Rfw",
+"09AW3sDHOHI",
+"9pVH8YZ54kg",
+"17csx2f4osY",
+"17hEcSsv57g",
+"48U-CRgeUUk",
+"79i84xYelZI",
+"nLKOQfKLUks", "cfOa1a8hYP8", "tjWOvmH_SE8", "6R_1Y_v14I8",
+"InxdlaVF_ME",
+"vIkLnyQfm4I",
+"znzBUtyDmB4",
+"h5gdDQcAM-Y",
+"-_FIwePYdjE",
+"fSQwCK_8VSM",
+"WHa4aDJhV1k",
+"V7IFP7SDLiI",
+"nCgQDjiotG0",
+"gx1-emg54H0",
+     ];
+
+      var flash_player = null;
+      var html5_player = null;
+
+      var index = 0;
+      var videos_run = 0;
+      var cumulative_diff = 0;
+      var num_videos_stopped = 0;
+
+      var timeout_watchdog = null;
+      var tests_ended = false;
+
+      // Inject script into page.
+      var tag = document.createElement('script');
+      tag.src = "http://www.youtube.com/player_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      function onYouTubePlayerAPIReady() {
+        start_test();
+      }
+
+      function start_test() {
+        num_videos_stopped = 0;
+        var video_id = video_ids[index];
+
+        html5_player = new IFramePlayer(video_id, true, do_stop_video);
+        flash_player = new IFramePlayer(video_id, false, do_stop_video);
+        inject_guts(video_id);
+        html5_player.start();
+        flash_player.start();
+
+        timeout_watchdog = setTimeout(function() { next_test() }, 15000);
+      }
+
+      function next_test() {
+        index++;
+        if (index < video_ids.length)
+          start_test();
+      }
+
+      function endTesting() {
+        clearTimeout(timeout_watchdog);
+        flash_player.pauseVideo();
+        html5_player.pauseVideo();
+      }
+
+      function test_success() {
+        clearTimeout(timeout_watchdog);
+
+        videos_run++;
+        cumulative_diff += flash_player.time_to_playback() - html5_player.time_to_playback();
+        var delta_box = document.getElementById("delta");
+        var count_box = document.getElementById("count");
+        delta_box.innerHTML = cumulative_diff / videos_run;
+        count_box.innerHTML = videos_run;
+
+        next_test();
+      }
+
+      function inject_guts(video_id) {
+        var header = "<h3>video id: " + video_id + "</h3>";
+        var flash_guts = flash_player.player_html();
+        var html5_guts = html5_player.player_html();
+
+        var container = document.getElementById("container");
+        container.innerHTML = header + flash_guts + html5_guts;
+      }
+
+      function do_stop_video() {
+        num_videos_stopped++;
+        if (num_videos_stopped == 2)
+          test_success();
+      }
+
+      function IFramePlayer(video_id, use_html5, stopped_cb) {
+        var page_start = new Date();
+        var time_playing = null;
+        var playback_time = null;
+        var player = null;
+        var stop_timer = null;
+        var poll_timer = null;
+
+        var played_once = false;
+        var playback_started = false;
+
+        var element_id;
+        if (use_html5)
+          element_id = "html5";
+        else
+          element_id = "flash";
+
+        var playing_element_id = element_id + "_time";
+        var playback_element_id = element_id + "_playback_time";
+
+        this.start = function() {
+          player = new YT.Player(element_id, {
+            events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+            },
+            playerVars: {
+              'autohide': 1,
+            }
+          });
+        }
+
+        this.player_html = function() {
+          return generate_guts(video_id, use_html5);
+        }
+
+        this.pauseVideo = function() {
+          clearTimeout(stop_timer);
+          player.pauseVideo();
+        }
+
+        this.time_to_playback = function() {
+          if (playback_time && page_start)
+            return playback_time.getTime() - page_start.getTime();
+          return -1;
+        }
+
+        this.time_to_playing = function() {
+          if (time_playing && page_start)
+            return time_playing.getTime() - page_start.getTime();
+          return -1;
+        }
+
+        function generate_guts() {
+          var type_param = "nohtml5=1";
+          if (use_html5)
+            type_param = "html5=1";
+
+          var guts =
+          ['<div>',
+           '  <h2 style="text-transform: uppercase;">' + element_id + '</h2>',
+           '  <iframe width="560" height="315" src="http://www.youtube.com/embed/' + video_id + '?' + type_param + '&enablejsapi=1" frameborder="0" allowfullscreen id="' + element_id + '"></iframe>',
+           '  <div>Time to PLAYING: <span id="' + playing_element_id + '"></span>ms</div>',
+           '  <div>Time to playback: <span id="' + playback_element_id + '"></span>ms</div>',
+           '</div>'
+          ].join('\n');
+
+          return guts;
+        }
+
+        function onPlayerReady(event) {
+          player.playVideo();
+          poll_timer = setTimeout(check_playing, 0);
+        }
+
+        function updateElementInnerHTML(element_id, content) {
+          var element = document.getElementById(element_id);
+          element.innerHTML = content;
+        }
+
+        function check_playing() {
+          if (player.getCurrentTime() > 0) {
+            playback_started = true;
+            playback_time = new Date();
+            var ms_to_playback = playback_time.getTime() - page_start.getTime();
+            updateElementInnerHTML(playback_element_id, ms_to_playback);
+            if (!stop_timer && played_once)
+              stop_timer = setTimeout(stopVideo, 5000);
+          } else {
+            poll_timer = setTimeout(check_playing, 0);
+          }
+        }
+
+        function onPlayerStateChange(event) {
+          if (event.data == YT.PlayerState.PLAYING && !played_once) {
+            played_once = true;
+            time_playing = new Date();
+            var ms_to_playing = time_playing.getTime() - page_start.getTime();
+            updateElementInnerHTML(playing_element_id, ms_to_playing);
+            if (!stop_timer && playback_started)
+              stop_timer = setTimeout(stopVideo, 5000);
+          }
+        }
+
+        function stopVideo() {
+          player.stopVideo();
+          stopped_cb();
+        }
+      }
+    </script>
+
+    <style>
+      #container > div {
+        width: 50%;
+        float:left;
+      }
+      span {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Time to PLAYING event: Flash vs HTML5 embed</h1>
+    <h2>After <span id="count">0</span> tests, Flash is <span id="delta">0</span>ms slower than &lt;video&gt; on average</h2>
+    <div id="container"></div>
+    <fieldset style="position: relative; top: 25pt;">
+      <legend>Controls</legend>
+      <button onclick="endTesting()">STOP TESTING</button>
+    </fieldset>
+    <fieldset style="position: relative; top: 25pt;">
+		<legend>Computer information</legend>
+		<script type="text/javascript">document.writeln(navigator.userAgent)</script>
+	</fieldset>
+	<fieldset style="position: relative; top: 25pt;">
+		<legend>Flash information</legend>
+		<script language="JavaScript">
+		var agent = navigator.userAgent.toLowerCase();
+		// detecting plugins
+		flashPlugin = raPlugin = qtPlugin = mediaPlayerPlugin = "false";
+		swdPlugin = acroReadPlugin = vrmlPlugin = "false";
+
+		if (agent.indexOf('msie') >= 0) {
+		        // function to detect the plugins in IE.
+			function detectIE(ClassID) { 
+				result = false; 
+				document.write('<SCRIPT LANGUAGE=VBScript\>\n on error resume next \n result = IsObject(CreateObject("' + ClassID + '"))</SCRIPT\>\n'); 
+				if (result) return true;
+				else return false;
+			}
+
+			if (detectIE("ShockwaveFlash.ShockwaveFlash.7")) flashPlugin = "version 7";
+			else if (detectIE("ShockwaveFlash.ShockwaveFlash.6")) flashPlugin = "version 6";
+			else if (detectIE("ShockwaveFlash.ShockwaveFlash.5")) flashPlugin = "version 5";
+			else flashPlugin = "false";
+			swdPlugin = detectIE("SWCtl.SWCtl.1");
+			raPlugin = detectIE("rmocx.RealPlayer G2 Control.1");
+			qtPlugin = detectIE("QuickTimeCheckObject.QuickTimeCheck.1");
+			mediaPlayerPlugin = detectIE("MediaPlayer.MediaPlayer.1");
+			acroReadPlugin = detectIE("PDF.PdfCtrl.5");
+			vrmlPlugin = detectIE("Cortona.Control");
+
+		} else {
+		        // function to detect the plugins in netscape
+		        function detect(ClassID) {
+		                if (nse.indexOf(ClassID) != -1)
+		                if (navigator.mimeTypes[ClassID].enabledPlugin != null)
+		                        return true;
+		                return false;
+		        }
+		        nse = "";
+		        // adding the plugin names
+		        for (var i=0;i<navigator.mimeTypes.length; i++)
+		        	nse += navigator.mimeTypes[i].type.toLowerCase();
+		        flashPlugin = detect("application/x-shockwave-flash");
+				raPlugin = detect("audio/x-pn-realaudio-plugin");
+				swdPlugin = detect("application/x-director");
+				mediaPlayerPlugin = detect("application/x-mplayer2");
+				acroReadPlugin = detect("application/pdf");
+				vrmlPlugin = detect("model/vrml");
+		}
+		document.writeln('<tr><td class=title>Flash enabled </td><td>' + flashPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>Shockwave Director </td><td>' + swdPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>Media Player enabled </td><td>' + mediaPlayerPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>RealPlayer enabled </td><td>' + raPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>Quicktime enabled </td><td>' + qtPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>Acrobat Reader enabled </td><td>' + acroReadPlugin + '</td></tr>');
+		document.writeln('<tr><td class=title>VRML enabled </td><td>' + vrmlPlugin + '</td></tr>');
+		</script>
+	</fieldset>
+  </body>
+</html>
